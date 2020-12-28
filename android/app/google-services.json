@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "856718168192",
+    "project_id": "chatapp-8d859",
+    "storage_bucket": "chatapp-8d859.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856718168192:android:fe71e8c14939778bf7d665",
+        "android_client_info": {
+          "package_name": "lk.imasha.chatApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856718168192-k7bsa3vforoei6jdfr316vuj3lncu4pl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lk.imasha.chatApp",
+            "certificate_hash": "ac5686f5e5197fd71940d9e4fc54ffee495bb33f"
+          }
+        },
+        {
+          "client_id": "856718168192-5b5jtg9eqnd9h03tl17dm1vu90nqfk84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDISj2iDSkPBiabv3nvdNguNfxcyT85oTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856718168192-5b5jtg9eqnd9h03tl17dm1vu90nqfk84.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
