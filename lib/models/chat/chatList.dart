@@ -35,7 +35,8 @@ class ChatList {
 
       DocumentReference r = await chatList.add({
         'ids': [_sender, reciver],
-        'users': [senderData, reciverData]
+        'users': [senderData, reciverData],
+        'lastUpdate': DateTime.now()
       });
       return r.id;
     }
@@ -47,6 +48,7 @@ class ChatList {
       'uid': doc['users'][i]['uid'],
       'name': doc['users'][i]['name'],
       'subtitle': doc['subtitle'],
+      'lastUpdate': doc['lastUpdate'],
       'imageUrl': doc['users'][i]['imageUrl'],
       'clId': doc.id,
       'unreadCount': doc['users'][1 - i]['unreadCount']
@@ -63,5 +65,15 @@ class ChatList {
             return _getProfile(c);
           }).toList();
         });
+  }
+
+  Future<String> getClid(String uid) async {
+    final CollectionReference _clRef = _firestore.collection('chatList');
+    final QuerySnapshot _clDocs =
+        await _clRef.where('ids', isEqualTo: [_sender, uid]).limit(1).get();
+    if (_clDocs.docs.isNotEmpty)
+      return _clDocs.docs.first.id;
+    else
+      return null;
   }
 }

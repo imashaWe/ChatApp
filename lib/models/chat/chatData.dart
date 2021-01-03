@@ -3,6 +3,7 @@ class ChatData {
   final String name;
   final String imageUrl;
   final String subtitle;
+  final DateTime lastUpdate;
   final String clId;
   final int unreadCount;
   ChatData(
@@ -10,6 +11,7 @@ class ChatData {
       this.name,
       this.imageUrl,
       this.subtitle,
+      this.lastUpdate,
       this.clId,
       this.unreadCount});
 
@@ -19,6 +21,7 @@ class ChatData {
         name: json['name'],
         imageUrl: json['imageUrl'],
         subtitle: json['subtitle'],
+        lastUpdate: json['lastUpdate'].toDate(),
         clId: json['clId'],
         unreadCount: json['unreadCount']);
   }

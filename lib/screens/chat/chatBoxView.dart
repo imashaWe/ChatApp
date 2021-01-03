@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:chatApp/models/chat/chatBox.dart';
 import 'package:intl/intl.dart';
-//import 'package:intl/date_symbol_data_local.dart';
 import 'package:bubble/bubble.dart';
+import 'package:chatApp/widget/profileImage.dart';
 
 class ChatBoxView extends StatefulWidget {
   final String name;
@@ -23,7 +23,6 @@ class _ChatBoxViewState extends State<ChatBoxView> {
 
   @override
   void initState() {
-    //_controller = ScrollController();
     _controller.addListener(_scrollListener);
     _chatBox.init(clId: widget.clId, reciver: widget.reciver);
     super.initState();
@@ -32,7 +31,7 @@ class _ChatBoxViewState extends State<ChatBoxView> {
   _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange) {
-      print('Birrom');
+      print('bottom');
     }
     if (_controller.offset <= _controller.position.minScrollExtent &&
         !_controller.position.outOfRange) {
@@ -43,8 +42,8 @@ class _ChatBoxViewState extends State<ChatBoxView> {
   void _send() async {
     String text = _text.text;
     if (text.isEmpty) return;
-    await _chatBox.sendText(text);
     _text.clear();
+    await _chatBox.sendText(text);
   }
 
   @override
@@ -70,73 +69,40 @@ class _ChatBoxViewState extends State<ChatBoxView> {
     );
 
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            color: Colors.white,
+            icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
-          title: Text(widget.name),
-          // title: Row(
-          //   children: [
-          //     Flexible(
-          //       child: CircleAvatar(
-          //         radius: 20,
-          //         backgroundImage: NetworkImage(widget.imageUrl),
-          //       ),
-          //     ),
-          //     Flexible(
-          //       child: Text(widget.name),
-          //     )
-          //   ],
-          // ),
+          title: Text(
+            widget.name,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          centerTitle: true,
+          actions: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5),
+              child: ProfileImage(
+                url: widget.imageUrl,
+              ),
+            )
+          ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
-            padding: EdgeInsets.only(bottom: size.height * .01),
-            child: Container(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom * .16),
-              child: ListTile(
-                  title: TextField(
-                    onSubmitted: (v) => _send(),
-                    scrollPadding: EdgeInsets.all(20),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: size.width * .001,
-                          horizontal: size.height * .03),
-                      hintText: 'Type a message',
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    controller: _text,
-                  ),
-                  trailing: GestureDetector(
-                    child: CircleAvatar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: Colors.white,
-                        radius: 25,
-                        child: Icon(Icons.send)),
-                    onTap: _send,
-                  )),
-            )),
         body: Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: size.width * .02, vertical: size.height * .02),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(
-                    height: size.height * .7,
+                    height: size.height * .78,
                     child: StreamBuilder<List<Message>>(
-                      stream: _chatBox.load(),
+                      stream: _chatBox.snapsshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<List<Message>> snapshot) {
                         if (snapshot.hasError) {
@@ -154,9 +120,22 @@ class _ChatBoxViewState extends State<ChatBoxView> {
                         return ListView(
                           controller: _controller,
                           children: snapshot.data.map((m) {
+                            if (!m.isMessage) {
+                              return Bubble(
+                                margin: BubbleEdges.only(top: 10),
+                                alignment: Alignment.center,
+                                color: Color.fromRGBO(212, 234, 244, 1.0),
+                                child: Text(m.text,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 11.0)),
+                              );
+                            }
                             final DateTime dateTime = m.time.toDate();
                             if (!m.isSend & !m.isRead) m.setAsRead();
                             return Bubble(
+                                margin: m.isSend
+                                    ? BubbleEdges.only(right: 10)
+                                    : BubbleEdges.only(left: 10),
                                 style: m.isSend ? styleMe : styleSomebody,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,6 +169,36 @@ class _ChatBoxViewState extends State<ChatBoxView> {
                         );
                       },
                     )),
+                Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: ListTile(
+                        title: TextField(
+                          onSubmitted: (v) => _send(),
+                          scrollPadding: EdgeInsets.all(20),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: size.width * .001,
+                                horizontal: size.height * .03),
+                            hintText: 'Type a message',
+                            fillColor: Colors.white,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          controller: _text,
+                        ),
+                        trailing: GestureDetector(
+                          child: CircleAvatar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              foregroundColor: Colors.white,
+                              radius: 25,
+                              child: Icon(Icons.send)),
+                          onTap: _send,
+                        ))),
               ],
             ),
           ),

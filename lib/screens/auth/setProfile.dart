@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:chatApp/models/appUser/appUser.dart';
+import 'package:chatApp/widget/profileImage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SetProfile extends StatefulWidget {
@@ -85,11 +86,14 @@ class _SetProfileState extends State<SetProfile> {
                                 Icons.person_add,
                                 size: 80,
                               )
-                            : CircleAvatar(
-                                radius: 80,
-                                backgroundImage: _image != null
-                                    ? FileImage(_image)
-                                    : NetworkImage(_profileUrl)),
+                            : _image != null
+                                ? CircleAvatar(
+                                    radius: 80,
+                                    backgroundImage: FileImage(_image))
+                                : ProfileImage(
+                                    url: _profileUrl,
+                                    radius: 80,
+                                  ),
                         onTap: _setImage))),
             Container(
                 padding: EdgeInsets.only(top: size.height * .06),

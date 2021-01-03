@@ -1,3 +1,5 @@
+import 'package:chatApp/widget/curveAppBar.dart';
+import 'package:chatApp/widget/profileImage.dart';
 import 'package:flutter/material.dart';
 import 'package:chatApp/models/appUser/appUser.dart';
 import 'chatBoxView.dart';
@@ -16,12 +18,12 @@ class _ContactListState extends State<ContactList> {
   }
 
   void _sync() async {
-    await AppUser.contacts.sycnc();
+    // await AppUser.contacts.sycnc();
     _loadConatact();
   }
 
   void _loadConatact() {
-    AppUser.contacts.get().then((_) => setState(() => contactList = _));
+    AppUser.contacts.fetch().then((_) => setState(() => contactList = _));
   }
 
   void _onContactTap(ProfileData profile) {
@@ -39,22 +41,32 @@ class _ContactListState extends State<ContactList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Contacts'),
+        backgroundColor: Theme.of(context).primaryColor,
+        body: CurveAppBar(
           actions: [
             IconButton(
-              icon: Icon(Icons.sync),
+              color: Colors.white,
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.arrow_back_ios),
+            ),
+            Text('Contacts',
+                style: TextStyle(
+                    //fontFamily: 'Montserrat',
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25.0)),
+            IconButton(
+              color: Colors.white,
               onPressed: _sync,
+              icon: Icon(Icons.sync),
             )
           ],
-        ),
-        body: Container(
           child: ListView.builder(
               itemCount: contactList.length,
               itemBuilder: (context, int i) {
                 return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(contactList[i].imageUrl),
+                  leading: ProfileImage(
+                    url: contactList[i].imageUrl,
                   ),
                   title: Text(contactList[i].name),
                   onTap: () => _onContactTap(contactList[i]),

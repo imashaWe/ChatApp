@@ -21,7 +21,7 @@ class Main extends StatelessWidget {
         '/profile': (context) => SetProfile(),
       },
       theme: ThemeData(
-        primaryColor: Colors.green,
+        primaryColor: Color(0xFF21BFBD),
         textTheme: TextTheme(
             headline1: TextStyle(
                 fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),

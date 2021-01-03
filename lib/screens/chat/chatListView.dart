@@ -1,10 +1,13 @@
 import 'package:chatApp/models/chat/chatData.dart';
 import 'package:flutter/material.dart';
-import 'package:chatApp/models/appUser/appUser.dart';
+import 'package:intl/intl.dart';
 import 'chatBoxView.dart';
 import 'contactList.dart';
-import 'package:chatApp/models/appUser/profileData.dart';
 import 'package:chatApp/models/chat/chatList.dart';
+import 'package:chatApp/widget/profileImage.dart';
+import 'package:chatApp/widget/curveAppBar.dart';
+
+enum AppBarAction { Profile }
 
 class ChatListView extends StatefulWidget {
   @override
@@ -36,19 +39,32 @@ class _ChatListViewState extends State<ChatListView> {
     }));
   }
 
+  String _toTimeString(DateTime dateTime) {
+    final int numDays = DateTime.parse(
+            DateFormat("yyyy-MM-dd").format(DateTime.now()))
+        .difference(DateTime.parse(DateFormat("yyyy-MM-dd").format(dateTime)))
+        .inDays;
+    print(numDays);
+    switch (numDays) {
+      case 0:
+        return DateFormat("K:mm a").format(dateTime);
+      case 1:
+        return 'Yesterday';
+      default:
+        return DateFormat("MM/dd/yy").format(dateTime);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('ChatApp'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          )
-        ],
+      backgroundColor: Theme.of(context).primaryColor,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: _onTapFloatingActionBtn,
+        child: Icon(Icons.add),
       ),
-      body: Center(
+      body: CurveAppBar(
         child: StreamBuilder<List<ChatData>>(
           stream: _chatList.load(),
           builder:
@@ -69,31 +85,77 @@ class _ChatListViewState extends State<ChatListView> {
               );
             return ListView(
               children: snapshot.data.map((p) {
+                print(p.imageUrl);
                 return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(p.imageUrl),
+                  contentPadding: EdgeInsets.all(10),
+                  leading: ProfileImage(
+                    url: p.imageUrl,
                   ),
                   subtitle: Text(p.subtitle),
-                  title: Text(p.name),
-                  trailing: Visibility(
-                      visible: p.unreadCount > 0,
-                      child: CircleAvatar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        foregroundColor: Colors.white,
-                        radius: 15,
-                        child: Text(p.unreadCount.toString()),
-                      )),
+                  title: Text(
+                    p.name,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(_toTimeString(p.lastUpdate)),
+                      Visibility(
+                          visible: p.unreadCount > 0,
+                          child: CircleAvatar(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            foregroundColor: Colors.white,
+                            radius: 15,
+                            child: Text(p.unreadCount.toString()),
+                          ))
+                    ],
+                  ),
                   onTap: () => _onChatListItemTap(p),
                 );
               }).toList(),
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: _onTapFloatingActionBtn,
-        child: Icon(Icons.add),
+        actions: [
+          Container(
+            child: Row(
+              children: <Widget>[
+                Text('Chat',
+                    style: TextStyle(
+                        //fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25.0)),
+                SizedBox(width: 10.0),
+                Text('App',
+                    style: TextStyle(
+                        //fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: 25.0))
+              ],
+            ),
+          ),
+          PopupMenuButton<AppBarAction>(
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            onSelected: (v) {
+              Navigator.pushNamed(context, '/profile');
+            },
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<AppBarAction>>[
+              const PopupMenuItem(
+                value: AppBarAction.Profile,
+                child: Text('Profile'),
+              ),
+              // const PopupMenuItem(
+              //   value: AppBarAction.Update,
+              //   child: Text('update'),
+              // )
+            ],
+          )
+        ],
       ),
     );
   }

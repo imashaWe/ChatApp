@@ -62,10 +62,9 @@ class Profile {
       try {
         firebase_storage.TaskSnapshot r =
             await _firebaseStorage.ref('profile/$uid/').putFile(image);
-        String url = await r.ref.getDownloadURL();
         DocumentSnapshot documentSnapshot = await getDoc();
         return await documentSnapshot.reference
-            .update({'imageUrl': url, 'name': name});
+            .update({'imageUrl': 'profile/$uid', 'name': name});
       } on firebase_core.FirebaseException catch (e) {
         throw e;
       }
