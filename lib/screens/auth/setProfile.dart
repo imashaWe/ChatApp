@@ -82,10 +82,12 @@ class _SetProfileState extends State<SetProfile> {
                 child: Align(
                     child: GestureDetector(
                         child: _image == null && _profileUrl == null
-                            ? Icon(
-                                Icons.person_add,
-                                size: 80,
-                              )
+                            ? CircleAvatar(
+                                radius: 80,
+                                child: Icon(
+                                  Icons.person_add,
+                                  size: 60,
+                                ))
                             : _image != null
                                 ? CircleAvatar(
                                     radius: 80,

@@ -4,8 +4,9 @@ enum AppBarAction { Profile }
 
 class CurveAppBar extends StatelessWidget {
   final Widget child;
+  final Widget title;
   final List<Widget> actions;
-  CurveAppBar({this.child, this.actions});
+  CurveAppBar({this.child, this.title, this.actions});
 
   void _onChangeMenu(AppBarAction v) {
     switch (v) {
@@ -19,9 +20,13 @@ class CurveAppBar extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: actions),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            title,
+            Row(
+              children: actions,
+            )
+          ]),
         ),
         SizedBox(height: 30.0),
         Container(

@@ -27,6 +27,10 @@ class _ChatListViewState extends State<ChatListView> {
     }));
   }
 
+  void _onTapSearch() {
+    // TODO
+  }
+
   void _onChatListItemTap(ChatData profile) {
     Navigator.push(context, MaterialPageRoute(builder: (_) {
       return ChatBoxView(
@@ -93,7 +97,7 @@ class _ChatListViewState extends State<ChatListView> {
                   subtitle: Text(p.subtitle),
                   title: Text(
                     p.name,
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 18),
                   ),
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,13 +119,20 @@ class _ChatListViewState extends State<ChatListView> {
             );
           },
         ),
+        title: Container(
+            child: Text('ChatApp',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25.0))),
         actions: [
-          Container(
-              child: Text('ChatApp',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25.0))),
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: _onTapSearch,
+          ),
           PopupMenuButton<AppBarAction>(
             icon: Icon(
               Icons.more_vert,

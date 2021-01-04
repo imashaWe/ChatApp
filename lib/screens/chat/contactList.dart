@@ -22,6 +22,10 @@ class _ContactListState extends State<ContactList> {
     _loadConatact();
   }
 
+  void _onTapSearch() {
+    // TODO
+  }
+
   void _loadConatact() {
     AppUser.contacts.fetch().then((_) => setState(() => contactList = _));
   }
@@ -43,18 +47,29 @@ class _ContactListState extends State<ContactList> {
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         body: CurveAppBar(
+          title: Row(
+            children: [
+              IconButton(
+                color: Colors.white,
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(Icons.arrow_back_ios),
+              ),
+              Text('Contacts',
+                  style: TextStyle(
+                      //fontFamily: 'Montserrat',
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25.0))
+            ],
+          ),
           actions: [
             IconButton(
-              color: Colors.white,
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(Icons.arrow_back_ios),
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: _onTapSearch,
             ),
-            Text('Contacts',
-                style: TextStyle(
-                    //fontFamily: 'Montserrat',
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25.0)),
             IconButton(
               color: Colors.white,
               onPressed: _sync,
