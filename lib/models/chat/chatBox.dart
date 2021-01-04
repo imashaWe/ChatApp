@@ -30,7 +30,7 @@ class ChatBox {
 
   Future<void> sendText(String text) async {
     if (_clId == null) {
-      _clId = await _chatList.create(_reciver);
+      _clId = await _chatList.create(_reciver, text);
     }
     final CollectionReference _messageRef = _firestore.collection('message');
     final CollectionReference _chatListRef = _firestore.collection('chatList');

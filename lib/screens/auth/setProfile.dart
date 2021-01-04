@@ -110,8 +110,8 @@ class _SetProfileState extends State<SetProfile> {
                 child: _isProcessing
                     ? Center(
                         child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.green)))
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).indicatorColor)))
                     : RaisedButton(
                         onPressed: _onSubmit,
                         child: Text(

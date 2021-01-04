@@ -9,7 +9,7 @@ class ChatList {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Contacts _contacts = AppUser.contacts;
 
-  Future<String> create(String reciver) async {
+  Future<String> create(String reciver, String text) async {
     final CollectionReference chatList = _firestore.collection('chatList');
     QuerySnapshot r = await chatList
         .where('ids', isEqualTo: [_sender, reciver])
@@ -24,19 +24,22 @@ class ChatList {
       var senderData = {
         'name': senderProfile.name,
         'imageUrl': senderProfile.imageUrl,
-        'uid': senderProfile.uid
+        'uid': senderProfile.uid,
+        'unreadCount': 0
       };
 
       var reciverData = {
         'name': reciverProfile.name,
         'imageUrl': reciverProfile.imageUrl,
-        'uid': reciverProfile.uid
+        'uid': reciverProfile.uid,
+        'unreadCount': 0
       };
 
       DocumentReference r = await chatList.add({
         'ids': [_sender, reciver],
         'users': [senderData, reciverData],
-        'lastUpdate': DateTime.now()
+        'lastUpdate': DateTime.now(),
+        'subtitle': text,
       });
       return r.id;
     }
@@ -59,6 +62,7 @@ class ChatList {
     final CollectionReference chatList = _firestore.collection('chatList');
     return chatList
         .where('ids', arrayContainsAny: [_sender])
+        .orderBy('lastUpdate', descending: true)
         .snapshots()
         .asyncMap((chatList) {
           return chatList.docs.map((c) {

@@ -168,7 +168,7 @@ class _OtpVerifyState extends State<OtpVerify> {
                     child: CountryCodePicker(
                       padding: EdgeInsets.only(right: 10),
                       //padding: EdgeInsets.only(top: size.height * .035),
-                      initialSelection: 'US',
+                      initialSelection: 'LK',
                       flagWidth: 40,
                       textStyle: TextStyle(fontSize: 20),
                       onInit: (v) => _countryCode = v.dialCode,
@@ -194,8 +194,8 @@ class _OtpVerifyState extends State<OtpVerify> {
             child: _isProcessing
                 ? Center(
                     child: CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.green)))
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).indicatorColor)))
                 : RaisedButton(
                     onPressed: _onTapSend,
                     child: Text(
@@ -276,8 +276,8 @@ class _OtpVerifyState extends State<OtpVerify> {
             child: _isProcessing
                 ? Center(
                     child: CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.green)))
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).indicatorColor)))
                 : RaisedButton(
                     onPressed: _onTapVerify,
                     child: Text(

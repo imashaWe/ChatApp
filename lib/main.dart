@@ -22,6 +22,7 @@ class Main extends StatelessWidget {
       },
       theme: ThemeData(
         primaryColor: Color(0xFF21BFBD),
+        indicatorColor: Color(0xFF21BFBD),
         textTheme: TextTheme(
             headline1: TextStyle(
                 fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),
@@ -31,7 +32,7 @@ class Main extends StatelessWidget {
                 fontWeight: FontWeight.normal),
             button: TextStyle(color: Colors.white, fontSize: 18)),
         buttonTheme: ButtonThemeData(
-            buttonColor: Colors.green.shade800,
+            buttonColor: Color(0xFF21BFBD),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
               // side: BorderSide(color: Colors.greenAccent)
@@ -77,7 +78,22 @@ class _CheckLoinState extends State<CheckLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.3,
+              child: Image.asset('assets/images/logo.png'),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.2,
+            ),
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).indicatorColor),
+            )
+          ],
+        ),
       ),
     );
   }

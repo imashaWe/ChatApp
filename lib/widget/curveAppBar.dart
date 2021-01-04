@@ -23,9 +23,9 @@ class CurveAppBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: actions),
         ),
-        SizedBox(height: 50.0),
+        SizedBox(height: 30.0),
         Container(
-          height: MediaQuery.of(context).size.height - 130.0,
+          height: MediaQuery.of(context).size.height - 116.0,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(

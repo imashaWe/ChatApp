@@ -61,17 +61,24 @@ class _ContactListState extends State<ContactList> {
               icon: Icon(Icons.sync),
             )
           ],
-          child: ListView.builder(
-              itemCount: contactList.length,
-              itemBuilder: (context, int i) {
-                return ListTile(
-                  leading: ProfileImage(
-                    url: contactList[i].imageUrl,
-                  ),
-                  title: Text(contactList[i].name),
-                  onTap: () => _onContactTap(contactList[i]),
-                );
-              }),
+          child: ListView.separated(
+            itemCount: contactList.length,
+            itemBuilder: (context, int i) {
+              return ListTile(
+                leading: ProfileImage(
+                  url: contactList[i].imageUrl,
+                ),
+                title: Text(contactList[i].name),
+                onTap: () => _onContactTap(contactList[i]),
+              );
+            },
+            separatorBuilder: (context, int i) {
+              return Divider(
+                color: Colors.black,
+                height: 20,
+              );
+            },
+          ),
         ));
   }
 }

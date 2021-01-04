@@ -39,11 +39,16 @@ class _ChatBoxViewState extends State<ChatBoxView> {
     }
   }
 
+  void _scrollToEnd() {
+    _controller.jumpTo(_controller.position.maxScrollExtent);
+  }
+
   void _send() async {
     String text = _text.text;
     if (text.isEmpty) return;
     _text.clear();
     await _chatBox.sendText(text);
+    _scrollToEnd();
   }
 
   @override
@@ -100,7 +105,7 @@ class _ChatBoxViewState extends State<ChatBoxView> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(
-                    height: size.height * .78,
+                    height: size.height * .74,
                     child: StreamBuilder<List<Message>>(
                       stream: _chatBox.snapsshots(),
                       builder: (BuildContext context,
@@ -157,7 +162,7 @@ class _ChatBoxViewState extends State<ChatBoxView> {
                                           visible: m.isSend & m.isRead,
                                           child: Icon(
                                             Icons.check,
-                                            size: 20,
+                                            size: 16,
                                             color: Colors.blue,
                                           ),
                                         )
@@ -170,7 +175,7 @@ class _ChatBoxViewState extends State<ChatBoxView> {
                       },
                     )),
                 Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.symmetric(vertical: 20),
                     child: ListTile(
                         title: TextField(
                           onSubmitted: (v) => _send(),

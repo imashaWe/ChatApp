@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'profileData.dart';
+import 'pushNotification.dart';
 
 class Profile {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -45,11 +46,14 @@ class Profile {
         'phone': phone,
       });
     } else {
+      final String token = await PushNotifiaction.getToken();
       final CollectionReference userDocs = _firestore.collection('users');
+
       return await userDocs.add({
         'uid': uid,
         'ccode': ccode,
         'phone': phone,
+        'token': token,
         'name': null,
         'imageUrl': null
       });
@@ -72,5 +76,17 @@ class Profile {
       DocumentSnapshot documentSnapshot = await getDoc();
       return await documentSnapshot.reference.update({'name': name});
     }
+  }
+
+  Future<void> setToken(String token) async {
+    final String uid = FirebaseAuth.instance.currentUser.uid;
+
+    QuerySnapshot _docs = await _firestore
+        .collection('users')
+        .where('uid', isEqualTo: uid)
+        .limit(1)
+        .get();
+
+    return await _docs.docs.first.reference.update({'token': token});
   }
 }

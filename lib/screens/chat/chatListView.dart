@@ -16,7 +16,6 @@ class ChatListView extends StatefulWidget {
 
 class _ChatListViewState extends State<ChatListView> {
   final ChatList _chatList = ChatList();
-
   @override
   void initState() {
     super.initState();
@@ -81,7 +80,7 @@ class _ChatListViewState extends State<ChatListView> {
               );
             if (snapshot.data.length == 0)
               return Center(
-                child: Icon(Icons.error),
+                child: Icon(Icons.no_sim),
               );
             return ListView(
               children: snapshot.data.map((p) {
@@ -118,23 +117,11 @@ class _ChatListViewState extends State<ChatListView> {
         ),
         actions: [
           Container(
-            child: Row(
-              children: <Widget>[
-                Text('Chat',
-                    style: TextStyle(
-                        //fontFamily: 'Montserrat',
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25.0)),
-                SizedBox(width: 10.0),
-                Text('App',
-                    style: TextStyle(
-                        //fontFamily: 'Montserrat',
-                        color: Colors.white,
-                        fontSize: 25.0))
-              ],
-            ),
-          ),
+              child: Text('ChatApp',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25.0))),
           PopupMenuButton<AppBarAction>(
             icon: Icon(
               Icons.more_vert,
