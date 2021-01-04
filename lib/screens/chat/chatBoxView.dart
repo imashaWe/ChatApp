@@ -74,139 +74,137 @@ class _ChatBoxViewState extends State<ChatBoxView> {
     );
 
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: IconButton(
-            color: Colors.white,
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: Text(
-            widget.name,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          centerTitle: true,
-          actions: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
-              child: ProfileImage(
-                url: widget.imageUrl,
-              ),
-            )
-          ],
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          color: Colors.white,
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        body: Container(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                    height: size.height * .74,
-                    child: StreamBuilder<List<Message>>(
-                      stream: _chatBox.snapsshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<Message>> snapshot) {
-                        if (snapshot.hasError) {
-                          print(snapshot.error);
-                          return Container();
-                        }
-                        if (snapshot.connectionState == ConnectionState.waiting)
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        if (snapshot.data.isEmpty)
-                          return Center(
-                            child: Icon(Icons.error),
-                          );
-                        return ListView(
-                          controller: _controller,
-                          children: snapshot.data.map((m) {
-                            if (!m.isMessage) {
-                              return Bubble(
-                                margin: BubbleEdges.only(top: 10),
-                                alignment: Alignment.center,
-                                color: Color.fromRGBO(212, 234, 244, 1.0),
-                                child: Text(m.text,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 11.0)),
-                              );
-                            }
-                            final DateTime dateTime = m.time.toDate();
-                            if (!m.isSend & !m.isRead) m.setAsRead();
-                            return Bubble(
-                                margin: m.isSend
-                                    ? BubbleEdges.only(right: 10)
-                                    : BubbleEdges.only(left: 10),
-                                style: m.isSend ? styleMe : styleSomebody,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        m.text,
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                    ),
-                                    Wrap(
-                                      children: [
-                                        Text(
-                                          DateFormat('K:mm a').format(dateTime),
-                                          style: TextStyle(
-                                              fontSize: 12, color: Colors.grey),
-                                        ),
-                                        Visibility(
-                                          visible: m.isSend & m.isRead,
-                                          child: Icon(
-                                            Icons.check,
-                                            size: 16,
-                                            color: Colors.blue,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ));
-                          }).toList(),
-                        );
-                      },
-                    )),
-                Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: ListTile(
-                        title: TextField(
-                          onSubmitted: (v) => _send(),
-                          scrollPadding: EdgeInsets.all(20),
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: size.width * .001,
-                                horizontal: size.height * .03),
-                            hintText: 'Type a message',
-                            fillColor: Colors.white,
-                            filled: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          controller: _text,
-                        ),
-                        trailing: GestureDetector(
-                          child: CircleAvatar(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              foregroundColor: Colors.white,
-                              radius: 25,
-                              child: Icon(Icons.send)),
-                          onTap: _send,
-                        ))),
-              ],
-            ),
+        title: Text(
+          widget.name,
+          style: TextStyle(
+            color: Colors.white,
           ),
-        ));
+        ),
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            child: ProfileImage(
+              url: widget.imageUrl,
+            ),
+          )
+        ],
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+              child: SizedBox(
+                  height: double.infinity,
+                  child: StreamBuilder<List<Message>>(
+                    stream: _chatBox.snapsshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<Message>> snapshot) {
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                        return Container();
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting)
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      if (snapshot.data.isEmpty)
+                        return Center(
+                          child: Icon(Icons.error),
+                        );
+                      return ListView(
+                        controller: _controller,
+                        children: snapshot.data.map((m) {
+                          if (!m.isMessage) {
+                            return Bubble(
+                              margin: BubbleEdges.only(top: 10),
+                              alignment: Alignment.center,
+                              color: Color.fromRGBO(212, 234, 244, 1.0),
+                              child: Text(m.text,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 11.0)),
+                            );
+                          }
+                          final DateTime dateTime = m.time.toDate();
+                          if (!m.isSend & !m.isRead) m.setAsRead();
+                          return Bubble(
+                              margin: m.isSend
+                                  ? BubbleEdges.only(right: 10)
+                                  : BubbleEdges.only(left: 10),
+                              style: m.isSend ? styleMe : styleSomebody,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      m.text,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  Wrap(
+                                    children: [
+                                      Text(
+                                        DateFormat('K:mm a').format(dateTime),
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.grey),
+                                      ),
+                                      Visibility(
+                                        visible: m.isSend & m.isRead,
+                                        child: Icon(
+                                          Icons.check,
+                                          size: 16,
+                                          color: Colors.blue,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ));
+                        }).toList(),
+                      );
+                    },
+                  ))),
+          Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: ListTile(
+                  title: TextField(
+                    onSubmitted: (v) => _send(),
+                    scrollPadding: EdgeInsets.all(20),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: size.width * .001,
+                          horizontal: size.height * .03),
+                      hintText: 'Type a message',
+                      fillColor: Colors.white,
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    controller: _text,
+                  ),
+                  trailing: GestureDetector(
+                    child: CircleAvatar(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Colors.white,
+                        radius: 25,
+                        child: Icon(Icons.send)),
+                    onTap: _send,
+                  ))),
+        ],
+      ),
+    );
   }
 }
