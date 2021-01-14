@@ -33,8 +33,9 @@ class _SetProfileState extends State<SetProfile> {
     super.initState();
   }
 
-  void _setImage() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.camera);
+  void _setImage(ImageSource source) async {
+    Navigator.pop(context);
+    final pickedFile = await _picker.getImage(source: source);
     if (pickedFile != null) setState(() => _image = File(pickedFile.path));
   }
 
@@ -49,7 +50,6 @@ class _SetProfileState extends State<SetProfile> {
     } catch (e) {
       _setError("Something went wrong error!");
     }
-//
   }
 
   void _setError(String error) {
@@ -65,10 +65,34 @@ class _SetProfileState extends State<SetProfile> {
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
+  void _onTapImage() {
+    _scaffoldKey.currentState.showBottomSheet((context) {
+      return Container(
+        //color: Colors.grey,
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: Icon(Icons.camera),
+              title: Text('Camera'),
+              onTap: () => _setImage(ImageSource.camera),
+            ),
+            ListTile(
+              leading: Icon(Icons.image),
+              title: Text('Gallery'),
+              onTap: () => _setImage(ImageSource.gallery),
+            )
+          ],
+        ),
+      );
+    }, backgroundColor: Colors.white, elevation: 10);
+  }
+
   void _setProcess(bool v) => setState(() => _isProcessing = v);
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
@@ -96,7 +120,7 @@ class _SetProfileState extends State<SetProfile> {
                                     url: _profileUrl,
                                     radius: 80,
                                   ),
-                        onTap: _setImage))),
+                        onTap: _onTapImage))),
             Container(
                 padding: EdgeInsets.only(top: size.height * .06),
                 child: TextField(
