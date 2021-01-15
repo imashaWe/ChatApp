@@ -15,5 +15,7 @@
   >`git clone https://github.com/imashaWe/chat-app.git`
 * After cloning install packages 
   >`flutter pub get`
+* Finally connect the Firebase
+  > This article help to do that [flutte-firebase](https://codelabs.developers.google.com/codelabs/flutter-firebase#6).
 * Run app
   >`flutter run`
