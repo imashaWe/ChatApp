@@ -16,6 +16,6 @@
 * After cloning install packages 
   >`flutter pub get`
 * Finally connect the Firebase
-  > This article help to do that [flutte-firebase](https://codelabs.developers.google.com/codelabs/flutter-firebase#6).
+  > This article help to do that [flutter-firebase](https://codelabs.developers.google.com/codelabs/flutter-firebase#6).
 * Run app
   >`flutter run`
