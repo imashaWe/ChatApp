@@ -1,16 +1,9 @@
-# chatApp
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Real Time Chat App!
+ - This app made by using Flutter and Firebase.
+ - Support mobile number authentication  system.
+ 
+**Screenshot**
+![screen1](https://photos.app.goo.gl/C85dKRA1jQtxrj7t6)
+![screen2](https://photos.app.goo.gl/C85dKRA1jQtxrj7t6)
+![screen3](https://photos.app.goo.gl/C85dKRA1jQtxrj7t6)
+![enter image description here](screen4)
