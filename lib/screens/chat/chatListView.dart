@@ -6,8 +6,9 @@ import 'contactList.dart';
 import 'package:chatApp/models/chat/chatList.dart';
 import 'package:chatApp/widget/profileImage.dart';
 import 'package:chatApp/widget/curveAppBar.dart';
+import 'package:chatApp/models/appUser/appUser.dart';
 
-enum AppBarAction { Profile }
+enum AppBarAction { Profile, SignOut }
 
 class ChatListView extends StatefulWidget {
   @override
@@ -138,8 +139,13 @@ class _ChatListViewState extends State<ChatListView> {
               Icons.more_vert,
               color: Colors.white,
             ),
-            onSelected: (v) {
-              Navigator.pushNamed(context, '/profile');
+            onSelected: (v) async {
+              if (v == AppBarAction.Profile) {
+                Navigator.pushNamed(context, '/profile');
+              } else {
+                await AppUser.logout();
+                Navigator.pushNamed(context, '/home');
+              }
             },
             itemBuilder: (BuildContext context) =>
                 <PopupMenuEntry<AppBarAction>>[
@@ -147,10 +153,10 @@ class _ChatListViewState extends State<ChatListView> {
                 value: AppBarAction.Profile,
                 child: Text('Profile'),
               ),
-              // const PopupMenuItem(
-              //   value: AppBarAction.Update,
-              //   child: Text('update'),
-              // )
+              const PopupMenuItem(
+                value: AppBarAction.SignOut,
+                child: Text('Sign out'),
+              )
             ],
           )
         ],
