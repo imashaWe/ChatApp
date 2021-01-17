@@ -1,6 +1,6 @@
 import 'package:chatApp/widget/profileImage.dart';
 import 'package:flutter/material.dart';
-import 'package:chatApp/models/appUser/appUser.dart';
+import 'package:chatApp/services/appUser/appUser.dart';
 import 'chatBoxView.dart';
 
 class ContactList extends StatefulWidget {
@@ -10,6 +10,8 @@ class ContactList extends StatefulWidget {
 
 class _ContactListState extends State<ContactList> {
   List<ProfileData> contactList = [];
+  bool _isProcessing = false;
+
   @override
   void initState() {
     _loadConatact();
@@ -25,9 +27,15 @@ class _ContactListState extends State<ContactList> {
     // TODO
   }
 
-  void _loadConatact() {
-    AppUser.contacts.fetch().then((_) => setState(() => contactList = _));
+  void _loadConatact() async {
+    _setProcessing(true);
+    final res = await AppUser.contacts.fetch();
+    setState(() => contactList = res);
+    _setProcessing(false);
   }
+
+  void _setProcessing(bool isProcessing) =>
+      setState(() => _isProcessing = isProcessing);
 
   void _onContactTap(ProfileData profile) {
     Navigator.push(context, MaterialPageRoute(builder: (_) {
@@ -66,24 +74,38 @@ class _ContactListState extends State<ContactList> {
         ),
         body: Container(
           padding: EdgeInsets.all(5),
-          child: ListView.separated(
-            itemCount: contactList.length,
-            itemBuilder: (context, int i) {
-              return ListTile(
-                leading: ProfileImage(
-                  path: contactList[i].imageUrl,
-                ),
-                title: Text(contactList[i].name),
-                trailing: Icon(Icons.message),
-                onTap: () => _onContactTap(contactList[i]),
-              );
-            },
-            separatorBuilder: (context, int i) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * .03,
-              );
-            },
-          ),
+          child: _isProcessing
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : contactList.length > 0
+                  ? ListView.separated(
+                      itemCount: contactList.length,
+                      itemBuilder: (context, int i) {
+                        return ListTile(
+                          leading: ProfileImage(
+                            path: contactList[i].imageUrl,
+                          ),
+                          title: Text(contactList[i].name),
+                          trailing: Icon(Icons.message),
+                          onTap: () => _onContactTap(contactList[i]),
+                        );
+                      },
+                      separatorBuilder: (context, int i) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * .03,
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.error_outline),
+                          Text("No contacts")
+                        ],
+                      ),
+                    ),
         ));
   }
 }

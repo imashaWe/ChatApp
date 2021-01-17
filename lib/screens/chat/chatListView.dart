@@ -1,11 +1,11 @@
-import 'package:chatApp/models/chat/chatData.dart';
+import 'package:chatApp/services/chat/chatData.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'chatBoxView.dart';
 import 'contactList.dart';
-import 'package:chatApp/models/chat/chatList.dart';
+import 'package:chatApp/services/chat/chatList.dart';
 import 'package:chatApp/widget/profileImage.dart';
-import 'package:chatApp/models/appUser/appUser.dart';
+import 'package:chatApp/services/appUser/appUser.dart';
 
 enum AppBarAction { Profile, SignOut }
 
@@ -114,7 +114,13 @@ class _ChatListViewState extends State<ChatListView> {
               if (snapshot.hasError) {
                 print(snapshot.error);
                 return Center(
-                  child: Icon(Icons.error),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline),
+                      Text("Something went wrong")
+                    ],
+                  ),
                 );
               }
               if (snapshot.connectionState == ConnectionState.waiting)
@@ -123,7 +129,13 @@ class _ChatListViewState extends State<ChatListView> {
                 );
               if (snapshot.data.length == 0)
                 return Center(
-                  child: Icon(Icons.no_sim),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline),
+                      Text("No active chatroom")
+                    ],
+                  ),
                 );
               return ListView(
                 children: snapshot.data.map((p) {

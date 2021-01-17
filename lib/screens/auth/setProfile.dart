@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:chatApp/models/appUser/appUser.dart';
+import 'package:chatApp/services/appUser/appUser.dart';
 import 'package:chatApp/widget/profileImage.dart';
 import 'package:image_picker/image_picker.dart';
 

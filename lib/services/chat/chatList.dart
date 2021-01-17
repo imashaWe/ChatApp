@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:chatApp/models/appUser/appUser.dart';
+import 'package:chatApp/services/appUser/appUser.dart';
 import 'chatData.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 

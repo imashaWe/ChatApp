@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:chatApp/models/chat/chatBox.dart';
+import 'package:chatApp/services/chat/chatBox.dart';
 import 'package:intl/intl.dart';
 import 'package:bubble/bubble.dart';
 import 'package:chatApp/widget/profileImage.dart';
@@ -30,12 +30,10 @@ class _ChatBoxViewState extends State<ChatBoxView> {
 
   _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange) {
-      print('bottom');
-    }
+        !_controller.position.outOfRange) {}
     if (_controller.offset <= _controller.position.minScrollExtent &&
         !_controller.position.outOfRange) {
-      print('top');
+      // To implement lazy-load
     }
   }
 
@@ -111,7 +109,15 @@ class _ChatBoxViewState extends State<ChatBoxView> {
                         AsyncSnapshot<List<Message>> snapshot) {
                       if (snapshot.hasError) {
                         print(snapshot.error);
-                        return Container();
+                        return Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.error_outline),
+                              Text("Something went wrong")
+                            ],
+                          ),
+                        );
                       }
                       if (snapshot.connectionState == ConnectionState.waiting)
                         return Center(
@@ -119,7 +125,13 @@ class _ChatBoxViewState extends State<ChatBoxView> {
                         );
                       if (snapshot.data.isEmpty)
                         return Center(
-                          child: Icon(Icons.error),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.error_outline),
+                              Text("No chat yet")
+                            ],
+                          ),
                         );
                       return ListView(
                         controller: _controller,

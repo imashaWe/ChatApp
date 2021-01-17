@@ -1,4 +1,4 @@
-import 'package:chatApp/models/appUser/profileData.dart';
+import 'package:chatApp/services/appUser/profileData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'profile.dart';
 import 'contacts.dart';

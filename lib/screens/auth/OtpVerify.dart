@@ -3,7 +3,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:chatApp/models/appUser/appUser.dart';
+import 'package:chatApp/services/appUser/appUser.dart';
 
 class OtpVerify extends StatefulWidget {
   @override
