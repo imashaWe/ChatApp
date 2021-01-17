@@ -1,16 +1,21 @@
-# chatApp
+# Real Time Chat App!
+ - This app made by using Flutter and Firebase.
+ - Cloudbase.
+ - Support mobile number authentication  system.
+ - Support push notifications.
+ 
+## Screenshot
 
-A new Flutter project.
+<img src="https://github.com/imashaWe/assets/blob/main/s3.png" width="250">                             <img src="https://github.com/imashaWe/assets/blob/main/s4.png" width="250">
+<br>
+<img src="https://github.com/imashaWe/assets/blob/main/s1.png" width="250">                             <img src="https://github.com/imashaWe/assets/blob/main/s2.png" width="250">
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## How to run
+* clone this repo
+  >`git clone https://github.com/imashaWe/chat-app.git`
+* After cloning install packages 
+  >`flutter pub get`
+* Finally connect the Firebase
+  > This article help to do that [flutter-firebase](https://codelabs.developers.google.com/codelabs/flutter-firebase#6).
+* Run app
+  >`flutter run`
