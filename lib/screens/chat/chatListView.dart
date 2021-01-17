@@ -47,7 +47,6 @@ class _ChatListViewState extends State<ChatListView> {
             DateFormat("yyyy-MM-dd").format(DateTime.now()))
         .difference(DateTime.parse(DateFormat("yyyy-MM-dd").format(dateTime)))
         .inDays;
-    print(numDays);
     switch (numDays) {
       case 0:
         return DateFormat("K:mm a").format(dateTime);
@@ -128,11 +127,10 @@ class _ChatListViewState extends State<ChatListView> {
                 );
               return ListView(
                 children: snapshot.data.map((p) {
-                  print(p.imageUrl);
                   return ListTile(
                     contentPadding: EdgeInsets.all(10),
                     leading: ProfileImage(
-                      url: p.imageUrl,
+                      path: p.imageUrl,
                     ),
                     subtitle: Text(p.subtitle),
                     title: Text(

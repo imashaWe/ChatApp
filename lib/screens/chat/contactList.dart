@@ -1,4 +1,3 @@
-import 'package:chatApp/widget/curveAppBar.dart';
 import 'package:chatApp/widget/profileImage.dart';
 import 'package:flutter/material.dart';
 import 'package:chatApp/models/appUser/appUser.dart';
@@ -72,7 +71,7 @@ class _ContactListState extends State<ContactList> {
             itemBuilder: (context, int i) {
               return ListTile(
                 leading: ProfileImage(
-                  url: contactList[i].imageUrl,
+                  path: contactList[i].imageUrl,
                 ),
                 title: Text(contactList[i].name),
                 trailing: Icon(Icons.message),

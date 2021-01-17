@@ -94,7 +94,7 @@ class _ChatBoxViewState extends State<ChatBoxView> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 5),
             child: ProfileImage(
-              url: widget.imageUrl,
+              path: widget.imageUrl,
             ),
           )
         ],

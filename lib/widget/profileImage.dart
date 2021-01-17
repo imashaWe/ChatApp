@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:firebase_core/firebase_core.dart' as firebase_core;
+
+const FORGROUND = Colors.white;
+const COLORS = [
+  Colors.greenAccent,
+  Colors.blueAccent,
+  Colors.redAccent,
+  Colors.yellowAccent,
+  Colors.purpleAccent,
+  Colors.limeAccent,
+  Colors.orangeAccent,
+];
 
 class ProfileImage extends StatefulWidget {
-  final String url;
+  final String path;
   final double radius;
-  ProfileImage({@required this.url, this.radius = 35});
+  ProfileImage({@required this.path, this.radius = 35});
   @override
   State<StatefulWidget> createState() => _ProfileImageState();
 }
@@ -15,30 +25,48 @@ class _ProfileImageState extends State<ProfileImage> {
   final firebase_storage.FirebaseStorage _firebaseStorage =
       firebase_storage.FirebaseStorage.instance;
 
-  String url;
+  String _url;
+  bool _isProcceng = true;
 
   @override
   void initState() {
-    _firebaseStorage
-        .ref(widget.url)
-        .getDownloadURL()
-        .then((r) => setState(() => url = r))
-        .catchError((e) => setState(() => url = null));
+    initImage();
     super.initState();
+  }
+
+  void initImage() async {
+    try {
+      final url = await _firebaseStorage.ref(widget.path).getDownloadURL();
+      setState(() => _url = url);
+    } catch (e) {
+      setState(() => _url = '');
+    }
+  }
+
+  Color randomColor() {
+    final Random random = Random();
+    return COLORS[random.nextInt(7)];
   }
 
   @override
   Widget build(BuildContext context) {
-    return url != null
+    final color = randomColor();
+    return _url == null
         ? CircleAvatar(
-            radius: widget.radius,
-            backgroundImage: NetworkImage(url),
-          )
-        : CircleAvatar(
+            backgroundColor: color,
             radius: widget.radius,
             child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).indicatorColor)),
-          );
+                valueColor: AlwaysStoppedAnimation<Color>(FORGROUND)),
+          )
+        : _url != ''
+            ? CircleAvatar(
+                radius: widget.radius,
+                backgroundImage: NetworkImage(_url),
+              )
+            : CircleAvatar(
+                backgroundColor: color,
+                foregroundColor: FORGROUND,
+                radius: widget.radius,
+                child: Icon(Icons.person));
   }
 }

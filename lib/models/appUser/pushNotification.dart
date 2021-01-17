@@ -24,6 +24,11 @@ class PushNotifiaction {
   // }
 
   static Future<String> getToken() async {
-    return await _firebaseMessaging.getToken().catchError((e) => {print(e)});
+    try {
+      return await _firebaseMessaging.getToken();
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 }

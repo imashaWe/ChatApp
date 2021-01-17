@@ -117,7 +117,7 @@ class _SetProfileState extends State<SetProfile> {
                                     radius: 80,
                                     backgroundImage: FileImage(_image))
                                 : ProfileImage(
-                                    url: _profileUrl,
+                                    path: _profileUrl,
                                     radius: 80,
                                   ),
                         onTap: _onTapImage))),
