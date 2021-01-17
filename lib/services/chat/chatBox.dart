@@ -31,6 +31,7 @@ class ChatBox {
   Future<void> sendText(String text) async {
     if (_clId == null) {
       _clId = await _chatList.create(_reciver, text);
+      loadMore();
     }
     final CollectionReference _messageRef = _firestore.collection('message');
     final CollectionReference _chatListRef = _firestore.collection('chatList');
@@ -113,18 +114,22 @@ class ChatBox {
   }
 
   void loadMore() {
-    final CollectionReference chatList = _firestore.collection('message');
-    chatList
-        .where('clId', isEqualTo: _clId ?? '0')
-        .orderBy('sendTs', descending: false)
-        //.limit(_limit)
-        //.startAt()
-        .snapshots()
-        .asyncMap((data) {
-      return _toMessages(data);
-    }).listen((r) {
-      if (r.isNotEmpty) _chatStreamController.add(r);
-    });
+    if (_clId == null) {
+      _chatStreamController.add([]);
+    } else {
+      final CollectionReference chatList = _firestore.collection('message');
+      chatList
+          .where('clId', isEqualTo: _clId)
+          .orderBy('sendTs', descending: false)
+          //.limit(_limit)
+          //.startAt()
+          .snapshots()
+          .asyncMap((data) {
+        return _toMessages(data);
+      }).listen((r) {
+        _chatStreamController.add(r);
+      });
+    }
   }
 
   Stream<List<Message>> snapsshots() {

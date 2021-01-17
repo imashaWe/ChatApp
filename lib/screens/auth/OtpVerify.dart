@@ -113,17 +113,9 @@ class _OtpVerifyState extends State<OtpVerify> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    Widget _sendOtp = ListView(
+    Widget _sendOtp = Column(
       children: [
-        SizedBox(
-            // height: size.height * .15,
-            ),
-        SizedBox(
-          height: size.height * .25,
-          child: Image.asset('assets/images/otp.png'),
-        ),
         Container(
-          padding: EdgeInsets.only(top: size.height * .1),
           child: Text('OTP Verifiaction',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline1),
@@ -167,7 +159,6 @@ class _OtpVerifyState extends State<OtpVerify> {
                     flex: 1,
                     child: CountryCodePicker(
                       padding: EdgeInsets.only(right: 10),
-                      //padding: EdgeInsets.only(top: size.height * .035),
                       initialSelection: 'LK',
                       flagWidth: 40,
                       textStyle: TextStyle(fontSize: 20),
@@ -190,7 +181,7 @@ class _OtpVerifyState extends State<OtpVerify> {
             )),
         Container(
             padding: EdgeInsets.symmetric(
-                vertical: size.height * .1, horizontal: size.width * .3),
+                vertical: size.height * .02, horizontal: size.width * .3),
             child: _isProcessing
                 ? Center(
                     child: CircularProgressIndicator(
@@ -206,24 +197,9 @@ class _OtpVerifyState extends State<OtpVerify> {
       ],
     );
 
-    Widget _verifyOtp = ListView(
+    Widget _verifyOtp = Column(
       children: [
-        // Align(
-        //   alignment: Alignment.topLeft,
-        //   child: IconButton(
-        //     onPressed: () => setState(() => _isSend = false),
-        //     icon: Icon(Icons.arrow_back, size: 35),
-        //   ),
-        // ),
-        SizedBox(
-            // height: size.height * .15,
-            ),
-        SizedBox(
-          height: size.height * .25,
-          child: Image.asset('assets/images/otp.png'),
-        ),
         Container(
-          padding: EdgeInsets.only(top: size.height * .1),
           child: Text('OTP Verifiaction',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline1),
@@ -272,7 +248,7 @@ class _OtpVerifyState extends State<OtpVerify> {
         ),
         Container(
             padding: EdgeInsets.symmetric(
-                vertical: size.height * .05, horizontal: size.width * .3),
+                vertical: size.height * .02, horizontal: size.width * .3),
             child: _isProcessing
                 ? Center(
                     child: CircularProgressIndicator(
@@ -288,14 +264,33 @@ class _OtpVerifyState extends State<OtpVerify> {
       ],
     );
     return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.white,
-      body: Center(
-        child: AnimatedSwitcher(
-          duration: Duration(seconds: 1),
-          child: _isSend ? _verifyOtp : _sendOtp,
-        ),
-      ),
-    );
+        key: _scaffoldKey,
+        backgroundColor: Colors.white,
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.1,
+                ),
+                SizedBox(
+                  height: size.height * .25,
+                  child: Image.asset('assets/images/otp.png'),
+                ),
+                AnimatedSwitcher(
+                    duration: Duration(seconds: 1),
+                    child: _isSend ? _verifyOtp : _sendOtp)
+              ],
+            ),
+          ),
+        ));
+    //   body: Center(
+    //       child: SingleChildScrollView(
+    //     child: AnimatedSwitcher(
+    //       duration: Duration(seconds: 1),
+    //       child: Center(child: _isSend ? _verifyOtp : _sendOtp),
+    //     ),
+    //   )),
+    // );
   }
 }

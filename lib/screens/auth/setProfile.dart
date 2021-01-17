@@ -11,7 +11,6 @@ class SetProfile extends StatefulWidget {
 
 class _SetProfileState extends State<SetProfile> {
   final Profile _profile = AppUser.profile;
-  //final AppUser _appUser = AppUser();
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _name = TextEditingController();
 
@@ -94,60 +93,68 @@ class _SetProfileState extends State<SetProfile> {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      key: _scaffoldKey,
-      body: Container(
-        padding: EdgeInsets.all(50),
-        child: ListView(
-          padding: EdgeInsets.only(top: size.height * .2),
-          //mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-                padding: EdgeInsets.only(top: size.height * .06),
-                child: Align(
-                    child: GestureDetector(
-                        child: _image == null && _profileUrl == null
-                            ? CircleAvatar(
-                                radius: 80,
-                                child: Icon(
-                                  Icons.person_add,
-                                  size: 60,
-                                ))
-                            : _image != null
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(
+            "Account settings",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                    padding: EdgeInsets.only(top: size.height * .06),
+                    child: Align(
+                        child: GestureDetector(
+                            child: _image == null && _profileUrl == null
                                 ? CircleAvatar(
                                     radius: 80,
-                                    backgroundImage: FileImage(_image))
-                                : ProfileImage(
-                                    path: _profileUrl,
-                                    radius: 80,
-                                  ),
-                        onTap: _onTapImage))),
-            Container(
-                padding: EdgeInsets.only(top: size.height * .06),
-                child: TextField(
-                  style: TextStyle(fontSize: 20),
-                  controller: _name,
-                  cursorColor: Colors.green,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person), hintText: 'Your Name'),
-                )),
-            Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: size.height * .1, horizontal: size.width * .2),
-                child: _isProcessing
-                    ? Center(
-                        child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).indicatorColor)))
-                    : RaisedButton(
-                        onPressed: _onSubmit,
-                        child: Text(
-                          'Finish',
-                          style: Theme.of(context).textTheme.button,
-                        ),
-                      ))
-          ],
-        ),
-      ),
-    );
+                                    child: Icon(
+                                      Icons.person_add,
+                                      size: 60,
+                                    ))
+                                : _image != null
+                                    ? CircleAvatar(
+                                        radius: 80,
+                                        backgroundImage: FileImage(_image))
+                                    : ProfileImage(
+                                        path: _profileUrl,
+                                        radius: 80,
+                                      ),
+                            onTap: _onTapImage))),
+                Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: size.width * .06,
+                        vertical: size.height * .05),
+                    child: TextField(
+                      style: TextStyle(fontSize: 20),
+                      controller: _name,
+                      cursorColor: Colors.green,
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.person),
+                          hintText: 'Your Name'),
+                    )),
+                Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: size.height * .1,
+                        horizontal: size.width * .2),
+                    child: _isProcessing
+                        ? Center(
+                            child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Theme.of(context).indicatorColor)))
+                        : RaisedButton(
+                            onPressed: _onSubmit,
+                            child: Text(
+                              'Finish',
+                              style: Theme.of(context).textTheme.button,
+                            ),
+                          ))
+              ],
+            ),
+          ),
+        ));
   }
 }
