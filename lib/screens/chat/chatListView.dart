@@ -5,7 +5,6 @@ import 'chatBoxView.dart';
 import 'contactList.dart';
 import 'package:chatApp/models/chat/chatList.dart';
 import 'package:chatApp/widget/profileImage.dart';
-import 'package:chatApp/widget/curveAppBar.dart';
 import 'package:chatApp/models/appUser/appUser.dart';
 
 enum AppBarAction { Profile, SignOut }
@@ -62,105 +61,104 @@ class _ChatListViewState extends State<ChatListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: _onTapFloatingActionBtn,
-        child: Icon(Icons.add),
-      ),
-      body: CurveAppBar(
-        child: StreamBuilder<List<ChatData>>(
-          stream: _chatList.load(),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<ChatData>> snapshot) {
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return Center(
-                child: Icon(Icons.error),
-              );
-            }
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            if (snapshot.data.length == 0)
-              return Center(
-                child: Icon(Icons.no_sim),
-              );
-            return ListView(
-              children: snapshot.data.map((p) {
-                print(p.imageUrl);
-                return ListTile(
-                  contentPadding: EdgeInsets.all(10),
-                  leading: ProfileImage(
-                    url: p.imageUrl,
-                  ),
-                  subtitle: Text(p.subtitle),
-                  title: Text(
-                    p.name,
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  trailing: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(_toTimeString(p.lastUpdate)),
-                      Visibility(
-                          visible: p.unreadCount > 0,
-                          child: CircleAvatar(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            foregroundColor: Colors.white,
-                            radius: 15,
-                            child: Text(p.unreadCount.toString()),
-                          ))
-                    ],
-                  ),
-                  onTap: () => _onChatListItemTap(p),
-                );
-              }).toList(),
-            );
-          },
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: _onTapFloatingActionBtn,
+          child: Icon(Icons.add),
         ),
-        title: Container(
-            child: Text('ChatApp',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25.0))),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: _onTapSearch,
+        appBar: AppBar(
+          title: Text(
+            'ChatApp',
+            style: TextStyle(color: Colors.white),
           ),
-          PopupMenuButton<AppBarAction>(
-            icon: Icon(
-              Icons.more_vert,
-              color: Colors.white,
-            ),
-            onSelected: (v) async {
-              if (v == AppBarAction.Profile) {
-                Navigator.pushNamed(context, '/profile');
-              } else {
-                await AppUser.logout();
-                Navigator.pushNamed(context, '/home');
-              }
-            },
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<AppBarAction>>[
-              const PopupMenuItem(
-                value: AppBarAction.Profile,
-                child: Text('Profile'),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
               ),
-              const PopupMenuItem(
-                value: AppBarAction.SignOut,
-                child: Text('Sign out'),
-              )
-            ],
-          )
-        ],
-      ),
-    );
+              onPressed: _onTapSearch,
+            ),
+            PopupMenuButton<AppBarAction>(
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.white,
+              ),
+              onSelected: (v) async {
+                if (v == AppBarAction.Profile) {
+                  Navigator.pushNamed(context, '/profile');
+                } else {
+                  await AppUser.logout();
+                  Navigator.pushNamed(context, '/home');
+                }
+              },
+              itemBuilder: (BuildContext context) =>
+                  <PopupMenuEntry<AppBarAction>>[
+                const PopupMenuItem(
+                  value: AppBarAction.Profile,
+                  child: Text('Account settings'),
+                ),
+                const PopupMenuItem(
+                  value: AppBarAction.SignOut,
+                  child: Text('Sign out'),
+                )
+              ],
+            )
+          ],
+        ),
+        body: Container(
+          padding: EdgeInsets.all(5),
+          child: StreamBuilder<List<ChatData>>(
+            stream: _chatList.load(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<ChatData>> snapshot) {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return Center(
+                  child: Icon(Icons.error),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              if (snapshot.data.length == 0)
+                return Center(
+                  child: Icon(Icons.no_sim),
+                );
+              return ListView(
+                children: snapshot.data.map((p) {
+                  print(p.imageUrl);
+                  return ListTile(
+                    contentPadding: EdgeInsets.all(10),
+                    leading: ProfileImage(
+                      url: p.imageUrl,
+                    ),
+                    subtitle: Text(p.subtitle),
+                    title: Text(
+                      p.name,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(_toTimeString(p.lastUpdate)),
+                        Visibility(
+                            visible: p.unreadCount > 0,
+                            child: CircleAvatar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              foregroundColor: Colors.white,
+                              radius: 15,
+                              child: Text(p.unreadCount.toString()),
+                            ))
+                      ],
+                    ),
+                    onTap: () => _onChatListItemTap(p),
+                  );
+                }).toList(),
+              );
+            },
+          ),
+        ));
   }
 }

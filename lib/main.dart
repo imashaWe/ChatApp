@@ -24,7 +24,8 @@ class Main extends StatelessWidget {
       },
       theme: ThemeData(
         primaryColor: Color(0xFF21BFBD),
-        indicatorColor: Color(0xFF21BFBD),
+        appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
+
         textTheme: TextTheme(
             headline1: TextStyle(
                 fontSize: 30, color: Colors.black, fontWeight: FontWeight.bold),

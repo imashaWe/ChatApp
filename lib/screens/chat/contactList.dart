@@ -45,22 +45,10 @@ class _ContactListState extends State<ContactList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        body: CurveAppBar(
-          title: Row(
-            children: [
-              IconButton(
-                color: Colors.white,
-                onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.arrow_back_ios),
-              ),
-              Text('Contacts',
-                  style: TextStyle(
-                      //fontFamily: 'Montserrat',
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25.0))
-            ],
+        appBar: AppBar(
+          title: Text(
+            'Contacts',
+            style: TextStyle(color: Colors.white),
           ),
           actions: [
             IconButton(
@@ -76,6 +64,9 @@ class _ContactListState extends State<ContactList> {
               icon: Icon(Icons.sync),
             )
           ],
+        ),
+        body: Container(
+          padding: EdgeInsets.all(5),
           child: ListView.separated(
             itemCount: contactList.length,
             itemBuilder: (context, int i) {
@@ -84,13 +75,13 @@ class _ContactListState extends State<ContactList> {
                   url: contactList[i].imageUrl,
                 ),
                 title: Text(contactList[i].name),
+                trailing: Icon(Icons.message),
                 onTap: () => _onContactTap(contactList[i]),
               );
             },
             separatorBuilder: (context, int i) {
-              return Divider(
-                color: Colors.black,
-                height: 20,
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * .03,
               );
             },
           ),
