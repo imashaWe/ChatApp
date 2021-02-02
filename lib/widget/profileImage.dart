@@ -61,6 +61,7 @@ class _ProfileImageState extends State<ProfileImage> {
         : _url != ''
             ? CircleAvatar(
                 radius: widget.radius,
+                backgroundColor: color,
                 backgroundImage: NetworkImage(_url),
               )
             : CircleAvatar(
