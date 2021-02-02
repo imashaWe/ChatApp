@@ -12,7 +12,7 @@
 
 ## How to run
 * clone this repo
-  >`git clone https://github.com/imashaWe/chat-app.git`
+  >`git clone https://github.com/imashaWe/chatApp.git`
 * After cloning install packages 
   >`flutter pub get`
 * Finally connect the Firebase
